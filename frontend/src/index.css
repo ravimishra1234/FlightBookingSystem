@@ -1,0 +1,175 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+@layer base {
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: #ffffff;
+    color: #0D1F1A;
+    overflow-x: hidden;
+  }
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: #f1f1f1; }
+  ::-webkit-scrollbar-thumb { background: #1D6B43; border-radius: 3px; }
+  input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0.5; cursor: pointer; }
+}
+
+@layer components {
+  /* Navbar states */
+  .navbar-dark {
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    color: #ffffff;
+  }
+  .navbar-white {
+    background: #ffffff;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    color: #0D1F1A;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+  }
+
+  /* Buttons */
+  .btn-green {
+    @apply bg-accent text-white font-semibold px-6 py-3 transition-all duration-200 hover:bg-accent-light active:scale-95;
+  }
+  .btn-green-outline {
+    @apply border-2 border-accent text-accent font-semibold px-6 py-3 transition-all duration-200 hover:bg-accent hover:text-white;
+  }
+  .btn-dark {
+    @apply bg-primary text-white font-semibold px-6 py-3 transition-all duration-200 hover:bg-primary-2 active:scale-95;
+  }
+
+  /* Search card */
+  .search-card {
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.1);
+  }
+
+  /* Search tab */
+  .search-tab {
+    @apply pb-3 px-1 text-sm font-medium text-gray-500 border-b-2 border-transparent cursor-pointer transition-all duration-200 hover:text-primary whitespace-nowrap;
+  }
+  .search-tab.active {
+    @apply text-primary border-accent font-semibold;
+  }
+
+  /* Input field saudia style */
+  .saudia-input {
+    @apply w-full bg-gray-50 border border-gray-200 text-primary px-4 py-3 text-sm focus:outline-none focus:border-accent transition-all duration-200;
+    border-radius: 4px;
+  }
+  .saudia-input-label {
+    @apply block text-xs text-gray-400 mb-0.5;
+  }
+
+  /* Destination card */
+  .dest-card {
+    @apply relative overflow-hidden cursor-pointer;
+    border-radius: 8px;
+  }
+  .dest-card img {
+    @apply w-full h-full object-cover transition-transform duration-500;
+  }
+  .dest-card:hover img { transform: scale(1.05); }
+
+  /* Experience card */
+  .exp-card {
+    @apply flex gap-6 pb-12 mb-12 border-b border-gray-100 last:border-0;
+  }
+
+  /* Plan trip card */
+  .plan-card {
+    @apply relative overflow-hidden cursor-pointer;
+    border-radius: 6px;
+  }
+  .plan-card:hover img { transform: scale(1.04); }
+  .plan-card img { @apply transition-transform duration-500; }
+}
+
+/* Hero slider */
+@keyframes heroFade {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+.hero-slide-enter { animation: heroFade 800ms ease-in-out forwards; }
+
+/* Navbar transition */
+.navbar-transition {
+  transition: background-color 900ms ease-in-out,
+              backdrop-filter 900ms ease-in-out,
+              border-color 900ms ease-in-out,
+              box-shadow 900ms ease-in-out,
+              color 700ms ease-in-out;
+}
+
+/* Floating search card overlap */
+.search-overlap {
+  position: relative;
+  z-index: 20;
+  margin-top: -80px;
+}
+
+/* Green radio button */
+input[type="radio"].green-radio:checked {
+  accent-color: #1D6B43;
+}
+input[type="radio"] { accent-color: #1D6B43; }
+
+/* Stepper */
+.stepper-step {
+  @apply flex items-center gap-2 text-sm font-medium;
+}
+.stepper-step.active .step-num {
+  @apply bg-primary text-white;
+}
+.stepper-step .step-num {
+  @apply w-7 h-7 rounded-full border-2 border-gray-300 flex items-center justify-center text-xs font-bold text-gray-400;
+}
+.stepper-step.active .step-label { @apply text-primary font-semibold; }
+.stepper-step .step-label { @apply text-gray-400; }
+
+/* Mega menu */
+.mega-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border-top: 1px solid rgba(0,0,0,0.08);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+  z-index: 100;
+}
+
+/* Sticky experiences layout */
+.experiences-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+  gap: 80px;
+}
+.experiences-left {
+  position: sticky;
+  top: 80px;
+}
+@media (max-width: 768px) {
+  .experiences-grid { grid-template-columns: 1fr; }
+  .experiences-left { position: static; }
+}
+
+.scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
