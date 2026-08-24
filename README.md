@@ -1,63 +1,235 @@
-# ✈ SkyJourney — Full Stack Flight Booking System
+# ✈️ SkyJourney — Full Stack Flight Booking System
 
-A production-quality MERN stack flight booking application with role-based authentication, email notifications, admin dashboard with charts, and a premium airline-themed UI.
+A full-stack MERN flight booking platform with **JWT authentication, role-based authorization, flight search, booking management, email notifications, admin dashboard, analytics, and AWS EC2 deployment**.
+
+SkyJourney provides separate experiences for **users and administrators**, allowing users to search and book flights while administrators can manage flights, users, and bookings through a dedicated dashboard.
 
 ---
 
-## 📁 Project Structure
+## ✨ Features
 
-```
+### ✈️ Flight Search & Discovery
+
+- 🔎 Search flights by source, destination, and departure date
+- 🎫 View available flights with pricing and seat availability
+- ✈️ Flight details including airline, timings, route, and seats
+- 📱 Responsive airline-themed interface
+
+### 🔐 Authentication & Authorization
+
+- 👤 User signup and login
+- 🔑 JWT-based authentication
+- 🛡️ Protected routes
+- 👨‍💼 Role-based authorization
+- 🚪 Logout functionality
+- 🔒 Separate user and admin access
+
+### 🎫 Flight Booking
+
+- 🧑‍💼 Passenger information management
+- 💺 Seat availability tracking
+- 🧾 Booking confirmation
+- 📋 View booking history
+- 🔎 Filter bookings by status
+- ❌ Cancel bookings with confirmation
+
+### 📧 Email Notifications
+
+Automated HTML email notifications using **Nodemailer**:
+
+- ✅ Booking confirmation emails
+- ❌ Booking cancellation emails
+- 📋 Passenger, flight, booking, and payment details
+
+### 👨‍💼 Admin Dashboard
+
+Dedicated admin portal with:
+
+- 📊 Dashboard statistics
+- 👥 User statistics
+- ✈️ Flight statistics
+- 🎫 Booking statistics
+- 💰 Revenue statistics
+- 📈 Monthly booking trends
+- 📊 Monthly revenue charts
+- 🏆 Top routes
+- ➕ Add flights
+- ✏️ Edit flights
+- 🗑️ Delete flights
+- 👥 Manage users
+- 🎫 Manage bookings
+
+---
+
+# 🏗️ Application Architecture
+
+```text
+                         SkyJourney
+                             │
+              ┌──────────────┴──────────────┐
+              │                             │
+        React Frontend                Node.js Backend
+              │                             │
+              ↓                             ↓
+       React Router                    Express.js API
+              │                             │
+       State Management          ┌─────────┴─────────┐
+              │                   │                   │
+              │                   ↓                   ↓
+              │              MongoDB Atlas        Nodemailer
+              │
+              ↓
+        User Interface
+🔄 Booking Flow
+User
+ ↓
+Search Flights
+ ↓
+Select Flight
+ ↓
+Enter Passenger Details
+ ↓
+Confirm Booking
+ ↓
+Backend API
+ ↓
+MongoDB Atlas
+ ↓
+Booking Created
+ ↓
+Confirmation Email
+ ↓
+My Bookings
+👨‍💼 Admin Flow
+Admin Login
+     ↓
+JWT Authentication
+     ↓
+Admin Authorization
+     ↓
+Admin Dashboard
+     │
+     ├── Flight Management
+     │      ├── Add Flight
+     │      ├── Edit Flight
+     │      └── Delete Flight
+     │
+     ├── User Management
+     │
+     └── Booking Management
+📁 Project Structure
 FlightBookingSystem/
+│
 ├── backend/
-│   ├── config/         → database.js, mailer.js
-│   ├── controllers/    → auth, flight, booking, admin
-│   ├── middleware/     → auth, admin, error
-│   ├── models/         → User, Flight, Booking
-│   ├── routes/         → auth, flight, booking, admin
-│   ├── services/       → emailService, paymentService
-│   ├── utils/          → generateToken, emailTemplates
+│   ├── config/
+│   │   ├── database.js
+│   │   └── mailer.js
+│   │
+│   ├── controllers/
+│   │   ├── authController.js
+│   │   ├── flightController.js
+│   │   ├── bookingController.js
+│   │   └── adminController.js
+│   │
+│   ├── middleware/
+│   │   ├── authMiddleware.js
+│   │   ├── adminMiddleware.js
+│   │   └── errorMiddleware.js
+│   │
+│   ├── models/
+│   │   ├── User.js
+│   │   ├── Flight.js
+│   │   └── Booking.js
+│   │
+│   ├── routes/
+│   │   ├── authRoutes.js
+│   │   ├── flightRoutes.js
+│   │   ├── bookingRoutes.js
+│   │   └── adminRoutes.js
+│   │
+│   ├── services/
+│   │   ├── emailService.js
+│   │   └── paymentService.js
+│   │
+│   ├── utils/
+│   │   ├── generateToken.js
+│   │   └── emailTemplates.js
+│   │
 │   ├── .env
 │   ├── server.js
 │   └── package.json
 │
 └── frontend/
     ├── src/
-    │   ├── api/        → axios instance
-    │   ├── components/ → Navbar, Footer, FlightCard, BookingCard, Modals...
-    │   ├── context/    → AuthContext
-    │   ├── layouts/    → MainLayout, AdminLayout
-    │   ├── pages/      → Home, Search, Login, Signup, Book, MyBookings
-    │   ├── pages/admin → Dashboard, Flights, Bookings, Users
-    │   ├── routes/     → ProtectedRoute, AdminRoute, PublicOnlyRoute
+    │   ├── api/
+    │   ├── components/
+    │   ├── context/
+    │   ├── layouts/
+    │   ├── pages/
+    │   │   └── admin/
+    │   ├── routes/
     │   ├── App.jsx
     │   └── main.jsx
+    │
     └── package.json
-```
-
----
-
-## 🚀 Quick Start
-
-### Prerequisites
-- Node.js v18+
-- MongoDB (local or Atlas)
-- Gmail account with App Password for emails
-
----
-
-### 1. Clone & Setup Backend
-
-```bash
-cd FlightBookingSystem/backend
+🛠️ Tech Stack
+Layer	Technologies
+Frontend	React 18, Vite, Tailwind CSS, Framer Motion, Recharts
+Backend	Node.js, Express.js
+Database	MongoDB, Mongoose
+Authentication	JWT, Bcrypt
+Email	Nodemailer, Gmail SMTP
+HTTP Client	Axios
+Web Server	Nginx
+Process Manager	PM2
+Deployment	AWS EC2
+Database Hosting	MongoDB Atlas
+🔑 API Endpoints
+Authentication
+Method	Endpoint	Access	Description
+POST	/api/auth/signup	Public	Register user
+POST	/api/auth/login	Public	User login
+GET	/api/auth/me	Private	Get current user
+Flights
+Method	Endpoint	Access	Description
+GET	/api/flights	Public	Get all flights
+GET	/api/flights/search	Public	Search flights
+GET	/api/flights/:id	Public	Get flight details
+POST	/api/flights	Admin	Create flight
+PUT	/api/flights/:id	Admin	Update flight
+DELETE	/api/flights/:id	Admin	Delete flight
+Bookings
+Method	Endpoint	Access	Description
+POST	/api/bookings	User	Create booking
+GET	/api/bookings/my-bookings	User	Get user's bookings
+GET	/api/bookings/:id	User/Admin	Get booking
+PUT	/api/bookings/:id/cancel	User	Cancel booking
+Admin
+Method	Endpoint	Access	Description
+POST	/api/admin/login	Public	Admin login
+POST	/api/admin/seed	Public	Create initial admin
+GET	/api/admin/dashboard	Admin	Dashboard statistics
+GET	/api/admin/users	Admin	Get all users
+GET	/api/admin/bookings	Admin	Get all bookings
+🚀 Getting Started
+Prerequisites
+Node.js 18+
+MongoDB / MongoDB Atlas
+Gmail account with App Password
+1. Clone Repository
+git clone <your-repository-url>
+cd FlightBookingSystem
+2. Setup Backend
+cd backend
 npm install
-```
 
-Edit `.env` with your values:
+Create a .env file:
 
-```env
 PORT=5000
-MONGO_URI=mongodb://localhost:27017/flightbooking
-JWT_SECRET=your_super_secret_key_here
+
+MONGO_URI=your_mongodb_connection_string
+
+JWT_SECRET=your_secret_key
 JWT_EXPIRE=7d
 
 EMAIL_HOST=smtp.gmail.com
@@ -65,212 +237,105 @@ EMAIL_PORT=587
 EMAIL_USER=your_email@gmail.com
 EMAIL_PASS=your_gmail_app_password
 
-ADMIN_EMAIL=admin@skyjourney.com
-ADMIN_PASSWORD=Admin@123456
-```
+GEMINI_API_KEY=your_gemini_api_key
 
-> **Gmail App Password:** Go to Google Account → Security → 2-Step Verification → App Passwords → Generate one for "Mail".
+ADMIN_EMAIL=your_admin_email
+ADMIN_PASSWORD=your_admin_password
 
-Start backend:
-```bash
+NODE_ENV=development
+CLIENT_URL=http://localhost:5173
+
+⚠️ Never commit .env files, API keys, passwords, or other sensitive credentials to GitHub.
+
+Start the backend:
+
 npm run dev
-```
+3. Seed Admin Account
 
----
+After starting the backend, create the initial admin account:
 
-### 2. Seed Admin Account
-
-After the backend starts, run this **once** to create the admin user:
-
-```bash
 curl -X POST http://localhost:5000/api/admin/seed
-```
 
-Or open in browser: `http://localhost:5000/api/admin/seed` (POST via Postman/Thunder Client)
+The admin credentials are taken from:
 
-Admin credentials will be whatever you set in `.env`:
-- Email: `admin@skyjourney.com`
-- Password: `Admin@123456`
+ADMIN_EMAIL
+ADMIN_PASSWORD
 
----
+The seed endpoint creates an admin only when an admin account does not already exist.
 
-### 3. Setup Frontend
-
-```bash
-cd FlightBookingSystem/frontend
+4. Setup Frontend
+cd frontend
 npm install
 npm run dev
-```
 
-Frontend runs at: **http://localhost:5173**
+Frontend runs at:
 
----
+http://localhost:5173
+☁️ Production Deployment
 
-## 🔑 API Endpoints
+SkyJourney is deployed on AWS EC2 using Nginx, PM2, and MongoDB Atlas.
 
-### Auth
-| Method | Endpoint | Access | Description |
-|--------|----------|--------|-------------|
-| POST | `/api/auth/signup` | Public | Register user |
-| POST | `/api/auth/login` | Public | User login |
-| GET | `/api/auth/me` | Private | Get profile |
+                    Internet
+                       │
+                       ↓
+                EC2 Public IP
+                       │
+                       ↓
+                     Nginx
+                    Port 80
+                       │
+              ┌────────┴────────┐
+              │                 │
+           /api/*                /
+              │                 │
+              ↓                 ↓
+        Node.js / Express    React Build
+           Port 5000        /var/www/flightbooking
+              │
+              ↓
+        MongoDB Atlas
+Production Infrastructure
+☁️ AWS EC2 — Application server
+🌐 Nginx — Web server and reverse proxy
+⚙️ PM2 — Node.js process manager
+🗄️ MongoDB Atlas — Production database
+⚛️ React + Vite — Production frontend
 
-### Flights
-| Method | Endpoint | Access | Description |
-|--------|----------|--------|-------------|
-| GET | `/api/flights` | Public | All flights |
-| GET | `/api/flights/search?source=&destination=&departureDate=` | Public | Search flights |
-| GET | `/api/flights/:id` | Public | Single flight |
-| POST | `/api/flights` | Admin | Create flight |
-| PUT | `/api/flights/:id` | Admin | Update flight |
-| DELETE | `/api/flights/:id` | Admin | Delete flight |
+Nginx serves the React production build and forwards /api requests to the Node.js backend running on port 5000.
 
-### Bookings
-| Method | Endpoint | Access | Description |
-|--------|----------|--------|-------------|
-| POST | `/api/bookings` | User | Create booking |
-| GET | `/api/bookings/my-bookings` | User | My bookings |
-| GET | `/api/bookings/:id` | User/Admin | Single booking |
-| PUT | `/api/bookings/:id/cancel` | User | Cancel booking |
+PM2 keeps the backend process running independently of the SSH session and restores the process after server reboot.
 
-### Admin
-| Method | Endpoint | Access | Description |
-|--------|----------|--------|-------------|
-| POST | `/api/admin/login` | Public | Admin login |
-| POST | `/api/admin/seed` | Public | Create admin (once) |
-| GET | `/api/admin/dashboard` | Admin | Stats + charts data |
-| GET | `/api/admin/users` | Admin | All users |
-| GET | `/api/admin/bookings` | Admin | All bookings |
+🧠 Key Concepts Demonstrated
+⚛️ React component architecture
+🧭 React Router
+🎨 Tailwind CSS
+🔐 JWT authentication
+🛡️ Role-based authorization
+🛣️ Protected routes
+🔄 REST API development
+🗄️ MongoDB & Mongoose
+📧 Transactional email notifications
+📊 Data visualization with Recharts
+⚡ Asynchronous API handling
+🏗️ MVC backend architecture
+🌐 Nginx reverse proxy
+⚙️ PM2 process management
+☁️ AWS EC2 deployment
+🔒 Environment variable management
+📦 Production build and deployment
+🔮 Future Improvements
+💳 Real payment gateway integration
+💺 Advanced seat selection
+🔔 Real-time booking notifications
+📱 Progressive Web App support
+📈 Advanced analytics
+🔄 Automated CI/CD deployment
+🔒 HTTPS with custom domain
+👨‍💻 Author
+Ravi Prakash Mishra
 
----
+MERN Stack Developer | React.js | JavaScript | Node.js | Generative AI
 
-## 👥 Roles & Features
+Built with ❤️ for learning, development and production deployment.
 
-### User
-- Sign up / Login / Logout
-- Search flights by source, destination, date
-- Book a flight with passenger details
-- View booking history (filter by status)
-- Cancel booking with confirmation modal
-- Automatic confirmation & cancellation emails
-
-### Admin
-- Separate admin login portal
-- Dashboard with stats (flights, users, bookings, revenue)
-- Area chart — monthly booking trends
-- Bar chart — monthly revenue
-- Top routes ranking
-- Add / Edit / Delete flights
-- View all users
-- View all bookings with filters
-
----
-
-## 🎨 Tech Stack
-
-| Layer | Tech |
-|-------|------|
-| Frontend | React 18, Vite, Tailwind CSS, Framer Motion, Recharts |
-| Backend | Node.js, Express.js |
-| Database | MongoDB, Mongoose |
-| Auth | JWT, Bcrypt |
-| Email | Nodemailer (Gmail SMTP) |
-| HTTP Client | Axios |
-
----
-
-## 🎨 Color Theme
-
-| Name | Hex |
-|------|-----|
-| Primary | `#0F172A` |
-| Secondary | `#2563EB` |
-| Accent | `#38BDF8` |
-| White | `#FFFFFF` |
-
----
-
-## 📧 Email System
-
-Two beautiful HTML email templates are included:
-
-1. **Booking Confirmation** — Sent on successful booking
-   - Passenger name, flight details, route, booking ID, amount
-
-2. **Booking Cancellation** — Sent on cancellation
-   - Booking ID, flight number, route, cancellation date, refund info
-
----
-
-## 💳 Payment Integration (Placeholder)
-
-`backend/services/paymentService.js` is ready for payment gateway integration.
-
-To integrate Razorpay:
-```bash
-npm install razorpay
-```
-Then replace the placeholder in `paymentService.js` with actual Razorpay API calls.
-
----
-
-## 🛠 Seed Sample Flights (Optional)
-
-Run this in MongoDB shell or Compass to add sample flights:
-
-```js
-db.flights.insertMany([
-  {
-    airline: "IndiGo",
-    flightNumber: "6E-201",
-    source: "Mumbai",
-    destination: "Delhi",
-    departureTime: new Date("2025-08-01T06:00:00"),
-    arrivalTime: new Date("2025-08-01T08:10:00"),
-    price: 4999,
-    totalSeats: 180,
-    availableSeats: 180,
-    status: "scheduled"
-  },
-  {
-    airline: "Air India",
-    flightNumber: "AI-302",
-    source: "Delhi",
-    destination: "Bangalore",
-    departureTime: new Date("2025-08-01T10:00:00"),
-    arrivalTime: new Date("2025-08-01T12:45:00"),
-    price: 6499,
-    totalSeats: 200,
-    availableSeats: 200,
-    status: "scheduled"
-  },
-  {
-    airline: "Vistara",
-    flightNumber: "UK-801",
-    source: "Mumbai",
-    destination: "Chennai",
-    departureTime: new Date("2025-08-01T14:00:00"),
-    arrivalTime: new Date("2025-08-01T16:15:00"),
-    price: 5299,
-    totalSeats: 150,
-    availableSeats: 150,
-    status: "scheduled"
-  }
-])
-```
-
----
-
-## ✅ Production Checklist
-
-- [ ] Change `JWT_SECRET` to a strong random string
-- [ ] Use MongoDB Atlas for production database
-- [ ] Set up Gmail App Password for email
-- [ ] Run `npm run build` in frontend for production build
-- [ ] Set `NODE_ENV=production` in backend `.env`
-- [ ] Deploy backend on Railway / Render / EC2
-- [ ] Deploy frontend on Vercel / Netlify
-
----
-
-Built with ❤ — SkyJourney Flight Booking System
+⭐ If you find this project useful, consider giving the repository a star.
