@@ -30,7 +30,7 @@ jobs:
         working-directory: frontend
         run: npm run build
 
-      # 5. Clean old frontend files from EC2
+      # 5. Prepare frontend deployment directory
       - name: Prepare frontend deployment directory
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -39,16 +39,20 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             sudo rm -rf /var/www/flightbooking/*
+            sudo chown ubuntu:www-data /var/www/flightbooking
+            sudo chmod 775 /var/www/flightbooking
 
-      # 6. Transfer production frontend build to EC2
+      # 6. Deploy frontend build to EC2
       - name: Deploy frontend build to EC2
-        uses: appleboy/scp-action@v1.0.0
+        uses: appleboy/scp-action@v1
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           source: "frontend/dist/*"
           target: "/var/www/flightbooking"
+          strip_components: 2
+          overwrite: true
 
       # 7. Deploy backend and restart PM2
       - name: Deploy backend to EC2
@@ -63,6 +67,7 @@ jobs:
             git pull origin main
 
             cd backend
+
             npm ci --omit=dev
 
             pm2 restart flight-booking-backend
