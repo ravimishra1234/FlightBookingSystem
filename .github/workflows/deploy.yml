@@ -1,4 +1,4 @@
-name: SkyJourney CI
+name: SkyJourney CI/CD
 
 on:
   push:
@@ -6,26 +6,63 @@ on:
       - main
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # 2. Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
 
-      - name: Install backend dependencies
-        working-directory: backend
-        run: npm install
-
+      # 3. Install frontend dependencies
       - name: Install frontend dependencies
         working-directory: frontend
-        run: npm install
+        run: npm ci
 
+      # 4. Build frontend
       - name: Build frontend
         working-directory: frontend
         run: npm run build
+
+      # 5. Clean old frontend files from EC2
+      - name: Prepare frontend deployment directory
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            sudo rm -rf /var/www/flightbooking/*
+
+      # 6. Transfer production frontend build to EC2
+      - name: Deploy frontend build to EC2
+        uses: appleboy/scp-action@v1.0.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "frontend/dist/*"
+          target: "/var/www/flightbooking"
+
+      # 7. Deploy backend and restart PM2
+      - name: Deploy backend to EC2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd /home/ubuntu/FlightBookingSystem
+
+            git pull origin main
+
+            cd backend
+            npm ci --omit=dev
+
+            pm2 restart flight-booking-backend
